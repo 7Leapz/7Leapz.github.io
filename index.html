@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>สั่งอาหารออนไลน์ - Food Delivery</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .cart-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 16px;
+            box-shadow: 0 5px 15px rgba(255,107,107,0.4);
+            z-index: 1000;
+            transition: all 0.3s;
+        }
+
+        .cart-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 20px rgba(255,107,107,0.5);
+        }
+
+        .cart-count {
+            background: white;
+            color: #ff6b6b;
+            border-radius: 50%;
+            padding: 2px 8px;
+            margin-left: 8px;
+            font-weight: bold;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .menu-item {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .menu-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .menu-info {
+            padding: 20px;
+        }
+
+        .menu-name {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .menu-desc {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .menu-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .price {
+            font-size: 1.5em;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .add-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .add-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102,126,234,0.4);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 1.8em;
+            color: #333;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 2em;
+            cursor: pointer;
+            color: #999;
+            transition: color 0.3s;
+        }
+
+        .close-btn:hover {
+            color: #333;
+        }
+
+        .cart-items {
+            margin: 20px 0;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .cart-item-name {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .cart-item-price {
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .qty-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .qty-btn:hover {
+            background: #764ba2;
+        }
+
+        .quantity {
+            font-weight: bold;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .cart-total {
+            border-top: 2px solid #e9ecef;
+            padding-top: 20px;
+            margin-top: 20px;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.1em;
+            margin-top: 20px;
+            transition: all 0.3s;
+        }
+
+        .checkout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102,126,234,0.4);
+        }
+
+        .empty-cart {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+
+        .empty-cart-icon {
+            font-size: 4em;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8em;
+            }
+            
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .cart-btn {
+                top: 10px;
+                right: 10px;
+                padding: 12px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🍕 Food Delivery</h1>
+            <p class="subtitle">สั่งอาหารอร่อยถึงบ้านคุณ</p>
+        </header>
+
+        <button class="cart-btn" onclick="toggleCart()">
+            🛒 ตะกร้า <span class="cart-count" id="cartCount">0</span>
+        </button>
+
+        <div class="menu-grid" id="menuGrid"></div>
+    </div>
+
+    <div class="modal" id="cartModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">🛒 ตะกร้าสินค้า</h2>
+                <button class="close-btn" onclick="toggleCart()">&times;</button>
+            </div>
+            <div class="cart-items" id="cartItems"></div>
+            <div class="cart-total" id="cartTotal" style="display: none;">
+                <div class="total-row">
+                    <span>รวมทั้งหมด:</span>
+                    <span id="totalPrice">0 ฿</span>
+                </div>
+                <button class="checkout-btn" onclick="checkout()">สั่งซื้อเลย</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const menuData = [
+            {
+                id: 1,
+                name: 'พิซซ่าฮาวายเอี้ยน',
+                desc: 'พิซซ่าหน้าแฮม สับปะรด ชีสเยิ้ม',
+                price: 299,
+                img: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400'
+            },
+            {
+                id: 2,
+                name: 'เบอร์เกอร์ชีสคลาสสิค',
+                desc: 'เบอร์เกอร์เนื้อวัวชั้นเลิศ ชีสเยิ้ม',
+                price: 159,
+                img: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400'
+            },
+            {
+                id: 3,
+                name: 'สปาเก็ตตี้คาโบนาร่า',
+                desc: 'สปาเก็ตตี้ซอสครีมเข้มข้น เบคอนหอม',
+                price: 189,
+                img: 'https://images.unsplash.com/photo-1612874742237-6526221588e3?w=400'
+            },
+            {
+                id: 4,
+                name: 'ซูชิรวมมิตร',
+                desc: 'ซูชิหลากหลายชนิด สดใหม่ทุกวัน',
+                price: 349,
+                img: 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=400'
+            },
+            {
+                id: 5,
+                name: 'ผัดไทยกุ้งสด',
+                desc: 'ผัดไทยกุ้งสด รสชาติต้นตำรับ',
+                price: 129,
+                img: 'https://images.unsplash.com/photo-1559314809-0d155014e29e?w=400'
+            },
+            {
+                id: 6,
+                name: 'ต้มยำกุ้ง',
+                desc: 'ต้มยำกุ้งรสจัดจ้าน กุ้งสดใหญ่',
+                price: 179,
+                img: 'https://images.unsplash.com/photo-1548943487-a2e4e43b4853?w=400'
+            }
+        ];
+
+        let cart = [];
+
+        function renderMenu() {
+            const menuGrid = document.getElementById('menuGrid');
+            menuGrid.innerHTML = menuData.map(item => `
+                <div class="menu-item">
+                    <img src="${item.img}" alt="${item.name}">
+                    <div class="menu-info">
+                        <div class="menu-name">${item.name}</div>
+                        <div class="menu-desc">${item.desc}</div>
+                        <div class="menu-footer">
+                            <div class="price">${item.price} ฿</div>
+                            <button class="add-btn" onclick="addToCart(${item.id})">เพิ่ม +</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function addToCart(itemId) {
+            const item = menuData.find(m => m.id === itemId);
+            const existingItem = cart.find(c => c.id === itemId);
+
+            if (existingItem) {
+                existingItem.quantity++;
+            } else {
+                cart.push({ ...item, quantity: 1 });
+            }
+
+            updateCart();
+        }
+
+        function updateQuantity(itemId, change) {
+            const item = cart.find(c => c.id === itemId);
+            if (item) {
+                item.quantity += change;
+                if (item.quantity <= 0) {
+                    cart = cart.filter(c => c.id !== itemId);
+                }
+            }
+            updateCart();
+        }
+
+        function updateCart() {
+            const cartCount = document.getElementById('cartCount');
+            const cartItems = document.getElementById('cartItems');
+            const cartTotal = document.getElementById('cartTotal');
+            const totalPrice = document.getElementById('totalPrice');
+
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            cartCount.textContent = totalItems;
+
+            if (cart.length === 0) {
+                cartItems.innerHTML = `
+                    <div class="empty-cart">
+                        <div class="empty-cart-icon">🛒</div>
+                        <p>ตะกร้าว่างเปล่า</p>
+                    </div>
+                `;
+                cartTotal.style.display = 'none';
+            } else {
+                cartItems.innerHTML = cart.map(item => `
+                    <div class="cart-item">
+                        <div class="cart-item-info">
+                            <div class="cart-item-name">${item.name}</div>
+                            <div class="cart-item-price">${item.price} ฿</div>
+                        </div>
+                        <div class="quantity-controls">
+                            <button class="qty-btn" onclick="updateQuantity(${item.id}, -1)">-</button>
+                            <span class="quantity">${item.quantity}</span>
+                            <button class="qty-btn" onclick="updateQuantity(${item.id}, 1)">+</button>
+                        </div>
+                    </div>
+                `).join('');
+
+                const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                totalPrice.textContent = `${total} ฿`;
+                cartTotal.style.display = 'block';
+            }
+        }
+
+        function toggleCart() {
+            const modal = document.getElementById('cartModal');
+            modal.classList.toggle('active');
+        }
+
+        function checkout() {
+            if (cart.length === 0) return;
+
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const orderList = cart.map(item => `${item.name} x${item.quantity}`).join('\n');
+            
+            alert(`🎉 สั่งซื้อสำเร็จ!\n\nรายการ:\n${orderList}\n\nยอดรวม: ${total} ฿\n\nขอบคุณที่ใช้บริการ!`);
+            
+            cart = [];
+            updateCart();
+            toggleCart();
+        }
+
+        renderMenu();
+    </script>
+</body>
+</html>
