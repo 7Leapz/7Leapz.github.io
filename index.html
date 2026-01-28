@@ -598,6 +598,408 @@
             50% { transform: translate(-15px, 15px) rotate(-10deg); }
             75% { transform: translate(15px, -10px) rotate(5deg); }
         }
+
+        /* Shopping Cart Modal */
+        .cart-modal {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 450px;
+            height: 100vh;
+            background: white;
+            box-shadow: -10px 0 50px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            transition: right 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            overflow-y: auto;
+        }
+
+        .cart-modal.active {
+            right: 0;
+        }
+
+        .cart-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .cart-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .cart-header {
+            background: linear-gradient(135deg, var(--primary-pink), var(--primary-purple));
+            color: white;
+            padding: 30px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .cart-header h2 {
+            font-family: 'Baloo 2', cursive;
+            font-size: 2rem;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .close-cart {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 2rem;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-cart:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        .cart-items {
+            padding: 20px;
+        }
+
+        .cart-item {
+            background: var(--bg-cream);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 15px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            animation: slideInCart 0.4s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cart-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .cart-item:hover::before {
+            left: 100%;
+        }
+
+        @keyframes slideInCart {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .cart-item-icon {
+            font-size: 3.5rem;
+            background: white;
+            width: 80px;
+            height: 80px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .cart-item-details {
+            flex: 1;
+        }
+
+        .cart-item-name {
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+            color: var(--text-dark);
+        }
+
+        .cart-item-price {
+            color: var(--primary-pink);
+            font-weight: 700;
+            font-size: 1.2rem;
+            font-family: 'Baloo 2', cursive;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .qty-btn {
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .qty-btn:hover {
+            transform: scale(1.2);
+            box-shadow: 0 4px 15px rgba(78, 205, 196, 0.4);
+        }
+
+        .qty-btn:active {
+            transform: scale(0.95);
+        }
+
+        .quantity {
+            font-weight: 700;
+            font-size: 1.1rem;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .remove-item {
+            background: linear-gradient(135deg, #FF6B9D, #FF4757);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            margin-top: 5px;
+        }
+
+        .remove-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(255, 71, 87, 0.4);
+        }
+
+        .empty-cart {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .empty-cart-icon {
+            font-size: 6rem;
+            margin-bottom: 20px;
+            opacity: 0.3;
+            animation: swing 2s ease-in-out infinite;
+        }
+
+        @keyframes swing {
+            0%, 100% { transform: rotate(-10deg); }
+            50% { transform: rotate(10deg); }
+        }
+
+        .empty-cart p {
+            color: var(--text-light);
+            font-size: 1.2rem;
+        }
+
+        .cart-summary {
+            background: linear-gradient(135deg, var(--bg-cream), #FFF5E6);
+            padding: 25px;
+            position: sticky;
+            bottom: 0;
+            border-top: 3px solid var(--primary-pink);
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .summary-row.total {
+            font-size: 1.5rem;
+            font-weight: 800;
+            font-family: 'Baloo 2', cursive;
+            color: var(--primary-pink);
+            padding-top: 15px;
+            border-top: 2px dashed var(--primary-pink);
+        }
+
+        .checkout-btn {
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary-pink), var(--primary-purple));
+            color: white;
+            border: none;
+            padding: 18px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(255, 107, 157, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .checkout-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .checkout-btn:hover::before {
+            width: 400px;
+            height: 400px;
+        }
+
+        .checkout-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(255, 107, 157, 0.5);
+        }
+
+        /* Confetti Animation */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: var(--primary-pink);
+            z-index: 2000;
+            animation: confettiFall 3s linear forwards;
+            pointer-events: none;
+        }
+
+        @keyframes confettiFall {
+            to {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* Product Card Hover Effects */
+        .product-card {
+            position: relative;
+        }
+
+        .product-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 107, 157, 0.1), rgba(160, 108, 213, 0.1));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border-radius: 25px;
+            pointer-events: none;
+        }
+
+        .product-card:hover::after {
+            opacity: 1;
+        }
+
+        .product-card:hover .product-image {
+            transform: scale(1.05);
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: linear-gradient(135deg, #4ECDC4, #A06CD5);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-weight: 700;
+            z-index: 1001;
+            box-shadow: 0 10px 30px rgba(78, 205, 196, 0.4);
+            animation: slideInRight 0.5s ease-out, fadeOut 0.5s ease-out 2.5s forwards;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                transform: translateX(400px);
+            }
+        }
+
+        /* Particle Effect */
+        .particle {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background: var(--primary-yellow);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1000;
+            animation: particleBurst 1s ease-out forwards;
+        }
+
+        @keyframes particleBurst {
+            to {
+                transform: translate(var(--x), var(--y)) scale(0);
+                opacity: 0;
+            }
+        }
+
+        /* Responsive Cart */
+        @media (max-width: 768px) {
+            .cart-modal {
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
@@ -606,6 +1008,36 @@
     <div class="decoration">⭐</div>
     <div class="decoration">🎨</div>
     <div class="decoration">🎪</div>
+
+    <!-- Shopping Cart Modal -->
+    <div class="cart-overlay" id="cartOverlay"></div>
+    <div class="cart-modal" id="cartModal">
+        <div class="cart-header">
+            <h2>🛒 ตะกร้าของคุณ</h2>
+            <p>รายการสินค้าที่เลือก</p>
+            <button class="close-cart" id="closeCart">×</button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <!-- Cart items will be inserted here -->
+        </div>
+        <div class="cart-summary" id="cartSummary">
+            <div class="summary-row">
+                <span>ยอดรวม:</span>
+                <span id="subtotal">฿0</span>
+            </div>
+            <div class="summary-row">
+                <span>ค่าจัดส่ง:</span>
+                <span id="shipping">฿50</span>
+            </div>
+            <div class="summary-row total">
+                <span>รวมทั้งหมด:</span>
+                <span id="total">฿0</span>
+            </div>
+            <button class="checkout-btn" id="checkoutBtn">
+                <span>ชำระเงิน</span>
+            </button>
+        </div>
+    </div>
 
     <header>
         <div class="container">
@@ -834,39 +1266,56 @@
     </footer>
 
     <script>
-        // Add to cart animation
-        document.querySelectorAll('.add-to-cart').forEach(button => {
+        // Shopping Cart System
+        let cart = [];
+        
+        const products = [
+            { id: 1, name: 'ตุ๊กตาหมีน้อย', price: 590, icon: '🧸', badge: 'ขายดี' },
+            { id: 2, name: 'รถบังคับวิทยุ', price: 1290, icon: '🚗', badge: 'ใหม่' },
+            { id: 3, name: 'ตัวต่อเสริมพัฒนาการ', price: 790, icon: '🧩', badge: '' },
+            { id: 4, name: 'ชุดสีระบายน้ำ', price: 450, icon: '🎨', badge: 'ลดพิเศษ' },
+            { id: 5, name: 'คอนโซลเกมส์พกพา', price: 2490, icon: '🎮', badge: '' },
+            { id: 6, name: 'ชุดบาสเก็ตบอล', price: 890, icon: '🏀', badge: 'ขายดี' },
+            { id: 7, name: 'ชุดเจ้าหญิง', price: 690, icon: '👑', badge: '' },
+            { id: 8, name: 'ไดโนเสาร์บังคับ', price: 1590, icon: '🦖', badge: 'ใหม่' }
+        ];
+
+        // Open/Close Cart
+        const cartBtn = document.querySelector('.cart-btn');
+        const cartModal = document.getElementById('cartModal');
+        const cartOverlay = document.getElementById('cartOverlay');
+        const closeCart = document.getElementById('closeCart');
+
+        function openCart() {
+            cartModal.classList.add('active');
+            cartOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeCartModal() {
+            cartModal.classList.remove('active');
+            cartOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        cartBtn.addEventListener('click', openCart);
+        closeCart.addEventListener('click', closeCartModal);
+        cartOverlay.addEventListener('click', closeCartModal);
+
+        // Add to Cart
+        document.querySelectorAll('.add-to-cart').forEach((button, index) => {
             button.addEventListener('click', function(e) {
                 e.preventDefault();
+                const product = products[index];
                 
-                // Create floating notification
-                const notification = document.createElement('div');
-                notification.textContent = '✓ เพิ่มลงตะกร้าแล้ว';
-                notification.style.cssText = `
-                    position: fixed;
-                    top: 100px;
-                    right: 20px;
-                    background: linear-gradient(135deg, #4ECDC4, #A06CD5);
-                    color: white;
-                    padding: 15px 30px;
-                    border-radius: 50px;
-                    font-weight: 700;
-                    z-index: 1000;
-                    animation: slideInRight 0.5s ease-out, fadeOut 0.5s ease-out 2s;
-                    box-shadow: 0 10px 30px rgba(78, 205, 196, 0.4);
-                `;
+                // Create particles effect
+                createParticles(e.clientX, e.clientY);
                 
-                document.body.appendChild(notification);
+                // Add product to cart
+                addToCart(product);
                 
-                // Update cart count
-                const cartBtn = document.querySelector('.cart-btn');
-                const currentCount = parseInt(cartBtn.textContent.match(/\d+/)[0]);
-                cartBtn.textContent = `🛒 ตะกร้า (${currentCount + 1})`;
-                
-                // Remove notification after animation
-                setTimeout(() => {
-                    notification.remove();
-                }, 2500);
+                // Show toast notification
+                showToast(`✓ เพิ่ม "${product.name}" ลงตะกร้าแล้ว`);
                 
                 // Button animation
                 this.style.transform = 'scale(0.9)';
@@ -875,6 +1324,154 @@
                 }, 200);
             });
         });
+
+        function addToCart(product) {
+            const existingItem = cart.find(item => item.id === product.id);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    ...product,
+                    quantity: 1
+                });
+            }
+            
+            updateCart();
+        }
+
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            updateCart();
+            showToast('🗑️ ลบสินค้าออกจากตะกร้าแล้ว');
+        }
+
+        function updateQuantity(productId, change) {
+            const item = cart.find(item => item.id === productId);
+            if (item) {
+                item.quantity += change;
+                if (item.quantity <= 0) {
+                    removeFromCart(productId);
+                } else {
+                    updateCart();
+                }
+            }
+        }
+
+        function updateCart() {
+            const cartItems = document.getElementById('cartItems');
+            const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+            
+            // Update cart button
+            cartBtn.textContent = `🛒 ตะกร้า (${cartCount})`;
+            
+            // Update cart items
+            if (cart.length === 0) {
+                cartItems.innerHTML = `
+                    <div class="empty-cart">
+                        <div class="empty-cart-icon">🛒</div>
+                        <p>ตะกร้าสินค้าว่างเปล่า</p>
+                        <p style="font-size: 0.95rem; margin-top: 10px;">เลือกสินค้าที่คุณชอบเลยค่ะ!</p>
+                    </div>
+                `;
+                document.getElementById('cartSummary').style.display = 'none';
+            } else {
+                document.getElementById('cartSummary').style.display = 'block';
+                cartItems.innerHTML = cart.map(item => `
+                    <div class="cart-item">
+                        <div class="cart-item-icon">${item.icon}</div>
+                        <div class="cart-item-details">
+                            <div class="cart-item-name">${item.name}</div>
+                            <div class="cart-item-price">฿${item.price.toLocaleString()}</div>
+                            <div class="quantity-controls">
+                                <button class="qty-btn" onclick="updateQuantity(${item.id}, -1)">-</button>
+                                <span class="quantity">${item.quantity}</span>
+                                <button class="qty-btn" onclick="updateQuantity(${item.id}, 1)">+</button>
+                            </div>
+                            <button class="remove-item" onclick="removeFromCart(${item.id})">ลบออก</button>
+                        </div>
+                    </div>
+                `).join('');
+                
+                // Update summary
+                const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                const shipping = subtotal > 0 ? 50 : 0;
+                const total = subtotal + shipping;
+                
+                document.getElementById('subtotal').textContent = `฿${subtotal.toLocaleString()}`;
+                document.getElementById('shipping').textContent = subtotal > 1000 ? 'ฟรี!' : `฿${shipping}`;
+                document.getElementById('total').textContent = `฿${(subtotal > 1000 ? subtotal : total).toLocaleString()}`;
+            }
+        }
+
+        // Checkout
+        document.getElementById('checkoutBtn').addEventListener('click', function() {
+            if (cart.length === 0) return;
+            
+            createConfetti();
+            showToast('🎉 ขอบคุณที่สั่งซื้อ! กำลังนำไปยังหน้าชำระเงิน...');
+            
+            setTimeout(() => {
+                alert('ระบบชำระเงินกำลังพัฒนา\nขอบคุณที่ใช้ ToyLand! 🎈');
+            }, 1000);
+        });
+
+        // Toast Notification
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+
+        // Particle Effect
+        function createParticles(x, y) {
+            const colors = ['#FF6B9D', '#4ECDC4', '#FFE66D', '#A06CD5', '#FF9F45'];
+            
+            for (let i = 0; i < 12; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = x + 'px';
+                particle.style.top = y + 'px';
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                
+                const angle = (Math.PI * 2 * i) / 12;
+                const velocity = 50 + Math.random() * 50;
+                const tx = Math.cos(angle) * velocity;
+                const ty = Math.sin(angle) * velocity;
+                
+                particle.style.setProperty('--x', tx + 'px');
+                particle.style.setProperty('--y', ty + 'px');
+                
+                document.body.appendChild(particle);
+                
+                setTimeout(() => particle.remove(), 1000);
+            }
+        }
+
+        // Confetti Effect
+        function createConfetti() {
+            const colors = ['#FF6B9D', '#4ECDC4', '#FFE66D', '#A06CD5', '#FF9F45'];
+            
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * window.innerWidth + 'px';
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.animationDelay = Math.random() * 0.5 + 's';
+                    confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                    
+                    document.body.appendChild(confetti);
+                    
+                    setTimeout(() => confetti.remove(), 3000);
+                }, i * 30);
+            }
+        }
 
         // Smooth scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -890,28 +1487,111 @@
             });
         });
 
-        // Add keyframes for notifications
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes slideInRight {
-                from {
-                    transform: translateX(400px);
-                    opacity: 0;
+        // Category hover effects
+        document.querySelectorAll('.category-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                const icon = this.querySelector('.category-icon');
+                icon.style.transform = 'scale(1.2) rotate(360deg)';
+                icon.style.transition = 'transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                const icon = this.querySelector('.category-icon');
+                icon.style.transform = 'scale(1) rotate(0deg)';
+            });
+        });
+
+        // Product card 3D tilt effect
+        document.querySelectorAll('.product-card').forEach(card => {
+            card.addEventListener('mousemove', function(e) {
+                const rect = this.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = (y - centerY) / 10;
+                const rotateY = (centerX - x) / 10;
+                
+                this.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-15px)`;
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0)';
+            });
+        });
+
+        // Initialize cart
+        updateCart();
+
+        // Add cursor effect
+        document.addEventListener('mousemove', (e) => {
+            if (Math.random() > 0.95) {
+                const sparkle = document.createElement('div');
+                sparkle.style.cssText = `
+                    position: fixed;
+                    left: ${e.clientX}px;
+                    top: ${e.clientY}px;
+                    width: 4px;
+                    height: 4px;
+                    background: rgba(255, 230, 109, 0.8);
+                    border-radius: 50%;
+                    pointer-events: none;
+                    z-index: 9999;
+                    animation: sparkle 1s ease-out forwards;
+                `;
+                
+                const style = document.createElement('style');
+                style.textContent = `
+                    @keyframes sparkle {
+                        to {
+                            transform: scale(3);
+                            opacity: 0;
+                        }
+                    }
+                `;
+                if (!document.querySelector('style[data-sparkle]')) {
+                    style.setAttribute('data-sparkle', 'true');
+                    document.head.appendChild(style);
                 }
-                to {
-                    transform: translateX(0);
-                    opacity: 1;
+                
+                document.body.appendChild(sparkle);
+                setTimeout(() => sparkle.remove(), 1000);
+            }
+        });
+
+        // Add scroll-based animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            // Press 'C' to toggle cart
+            if (e.key === 'c' || e.key === 'C') {
+                if (cartModal.classList.contains('active')) {
+                    closeCartModal();
+                } else {
+                    openCart();
                 }
             }
             
-            @keyframes fadeOut {
-                to {
-                    opacity: 0;
-                    transform: translateX(400px);
-                }
+            // Press 'Escape' to close cart
+            if (e.key === 'Escape' && cartModal.classList.contains('active')) {
+                closeCartModal();
             }
-        `;
-        document.head.appendChild(style);
+        });
     </script>
 </body>
 </html>
