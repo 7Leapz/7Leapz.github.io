@@ -3,8 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>สั่งอาหารออนไลน์ - Food Delivery</title>
+    <title>ToyLand - ร้านของเล่นออนไลน์</title>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary-pink: #FF6B9D;
+            --primary-blue: #4ECDC4;
+            --primary-yellow: #FFE66D;
+            --primary-purple: #A06CD5;
+            --primary-orange: #FF9F45;
+            --bg-cream: #FFF8F0;
+            --text-dark: #2D3436;
+            --text-light: #636E72;
+            --shadow-soft: 0 8px 30px rgba(255, 107, 157, 0.15);
+            --shadow-hover: 0 15px 40px rgba(255, 107, 157, 0.25);
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -12,486 +26,892 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(135deg, var(--bg-cream) 0%, #FFF5E6 100%);
+            color: var(--text-dark);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            right: -20%;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(255, 107, 157, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 0;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            bottom: -30%;
+            left: -10%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(78, 205, 196, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 0;
+            animation: float 25s ease-in-out infinite reverse;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(30px, -30px) rotate(5deg); }
+            66% { transform: translate(-20px, 20px) rotate(-5deg); }
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
         }
 
+        /* Header */
         header {
-            background: white;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            margin-bottom: 30px;
-            text-align: center;
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            background: rgba(255, 248, 240, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            animation: slideDown 0.6s ease-out;
         }
 
-        h1 {
-            color: #667eea;
-            font-size: 2.5em;
-            margin-bottom: 10px;
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
 
-        .subtitle {
-            color: #666;
-            font-size: 1.1em;
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Baloo 2', cursive;
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-pink), var(--primary-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+            position: relative;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 35px;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-dark);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.05rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-pink), var(--primary-blue));
+            transition: width 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
         }
 
         .cart-btn {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: #ff6b6b;
+            background: linear-gradient(135deg, var(--primary-pink), var(--primary-purple));
             color: white;
-            border: none;
-            padding: 15px 25px;
+            padding: 12px 28px;
             border-radius: 50px;
+            border: none;
             cursor: pointer;
-            font-size: 16px;
-            box-shadow: 0 5px 15px rgba(255,107,107,0.4);
-            z-index: 1000;
-            transition: all 0.3s;
+            font-weight: 700;
+            font-size: 1rem;
+            box-shadow: var(--shadow-soft);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cart-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .cart-btn:hover::before {
+            width: 300px;
+            height: 300px;
         }
 
         .cart-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 7px 20px rgba(255,107,107,0.5);
+            box-shadow: var(--shadow-hover);
         }
 
-        .cart-count {
+        /* Hero Section */
+        .hero {
+            padding: 80px 0 60px;
+            text-align: center;
+            animation: fadeIn 1s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero h1 {
+            font-family: 'Baloo 2', cursive;
+            font-size: 4.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--primary-pink), var(--primary-purple), var(--primary-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+            animation: slideUp 0.8s ease-out 0.2s both;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto 40px;
+            animation: slideUp 0.8s ease-out 0.4s both;
+        }
+
+        .search-box {
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+            animation: slideUp 0.8s ease-out 0.6s both;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 20px 60px 20px 30px;
+            border: 3px solid transparent;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-family: 'Quicksand', sans-serif;
             background: white;
-            color: #ff6b6b;
-            border-radius: 50%;
-            padding: 2px 8px;
-            margin-left: 8px;
-            font-weight: bold;
+            box-shadow: var(--shadow-soft);
+            transition: all 0.3s ease;
         }
 
-        .menu-grid {
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary-pink);
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-2px);
+        }
+
+        .search-box button {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(135deg, var(--primary-pink), var(--primary-purple));
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+
+        .search-box button:hover {
+            transform: translateY(-50%) scale(1.05);
+        }
+
+        /* Categories */
+        .categories {
+            padding: 60px 0;
+            animation: fadeIn 1s ease-out 0.8s both;
+        }
+
+        .section-title {
+            font-family: 'Baloo 2', cursive;
+            font-size: 2.8rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 50px;
+            color: var(--text-dark);
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-pink), var(--primary-blue));
+            border-radius: 10px;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
+
+        .category-card {
+            background: white;
+            padding: 35px 20px;
+            border-radius: 25px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: var(--shadow-soft);
+            border: 3px solid transparent;
+            animation: scaleIn 0.5s ease-out both;
+        }
+
+        .category-card:nth-child(1) { animation-delay: 0.1s; }
+        .category-card:nth-child(2) { animation-delay: 0.2s; }
+        .category-card:nth-child(3) { animation-delay: 0.3s; }
+        .category-card:nth-child(4) { animation-delay: 0.4s; }
+        .category-card:nth-child(5) { animation-delay: 0.5s; }
+        .category-card:nth-child(6) { animation-delay: 0.6s; }
+
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .category-card:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .category-card:nth-child(1):hover { border-color: var(--primary-pink); }
+        .category-card:nth-child(2):hover { border-color: var(--primary-blue); }
+        .category-card:nth-child(3):hover { border-color: var(--primary-yellow); }
+        .category-card:nth-child(4):hover { border-color: var(--primary-purple); }
+        .category-card:nth-child(5):hover { border-color: var(--primary-orange); }
+        .category-card:nth-child(6):hover { border-color: var(--primary-pink); }
+
+        .category-icon {
+            font-size: 4rem;
+            margin-bottom: 15px;
+            display: block;
+            animation: wiggle 2s ease-in-out infinite;
+        }
+
+        @keyframes wiggle {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-5deg); }
+            75% { transform: rotate(5deg); }
+        }
+
+        .category-card:hover .category-icon {
+            animation: spin 0.6s ease-in-out;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .category-name {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--text-dark);
+        }
+
+        /* Products */
+        .products {
+            padding: 60px 0;
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .product-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 25px;
-            margin-bottom: 30px;
+            gap: 35px;
+            margin-top: 40px;
         }
 
-        .menu-item {
+        .product-card {
             background: white;
-            border-radius: 15px;
+            border-radius: 25px;
             overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: var(--shadow-soft);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            position: relative;
+            animation: fadeInUp 0.6s ease-out both;
         }
 
-        .menu-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        .product-card:nth-child(1) { animation-delay: 0.1s; }
+        .product-card:nth-child(2) { animation-delay: 0.2s; }
+        .product-card:nth-child(3) { animation-delay: 0.3s; }
+        .product-card:nth-child(4) { animation-delay: 0.4s; }
+        .product-card:nth-child(5) { animation-delay: 0.5s; }
+        .product-card:nth-child(6) { animation-delay: 0.6s; }
+        .product-card:nth-child(7) { animation-delay: 0.7s; }
+        .product-card:nth-child(8) { animation-delay: 0.8s; }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .menu-item img {
+        .product-card:hover {
+            transform: translateY(-15px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .product-image {
             width: 100%;
-            height: 200px;
-            object-fit: cover;
+            height: 280px;
+            background: linear-gradient(135deg, #FFE6F0, #E6F7FF);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8rem;
+            position: relative;
+            overflow: hidden;
         }
 
-        .menu-info {
-            padding: 20px;
+        .product-image::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+            animation: shimmer 3s ease-in-out infinite;
         }
 
-        .menu-name {
-            font-size: 1.3em;
-            font-weight: bold;
-            color: #333;
+        @keyframes shimmer {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(30%, 30%); }
+        }
+
+        .badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: linear-gradient(135deg, var(--primary-pink), var(--primary-purple));
+            color: white;
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            box-shadow: 0 4px 15px rgba(255, 107, 157, 0.4);
+            z-index: 1;
+        }
+
+        .product-info {
+            padding: 25px;
+        }
+
+        .product-name {
+            font-weight: 700;
+            font-size: 1.3rem;
             margin-bottom: 8px;
+            color: var(--text-dark);
         }
 
-        .menu-desc {
-            color: #666;
-            font-size: 0.9em;
+        .product-description {
+            color: var(--text-light);
+            font-size: 0.95rem;
             margin-bottom: 15px;
-            line-height: 1.5;
+            line-height: 1.6;
         }
 
-        .menu-footer {
+        .product-footer {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .price {
-            font-size: 1.5em;
-            color: #667eea;
-            font-weight: bold;
+            font-family: 'Baloo 2', cursive;
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-pink), var(--primary-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
-        .add-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        .add-to-cart {
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
             color: white;
             border: none;
-            padding: 10px 20px;
-            border-radius: 25px;
+            padding: 12px 24px;
+            border-radius: 50px;
             cursor: pointer;
-            font-size: 14px;
-            transition: all 0.3s;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(78, 205, 196, 0.3);
         }
 
-        .add-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(102,126,234,0.4);
+        .add-to-cart:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(78, 205, 196, 0.5);
         }
 
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.7);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, var(--primary-pink), var(--primary-purple));
+            color: white;
+            padding: 60px 0 30px;
+            margin-top: 80px;
         }
 
-        .modal.active {
-            display: flex;
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
         }
 
-        .modal-content {
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            max-width: 500px;
-            width: 100%;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .footer-section h3 {
+            font-family: 'Baloo 2', cursive;
+            font-size: 1.8rem;
             margin-bottom: 20px;
         }
 
-        .modal-title {
-            font-size: 1.8em;
-            color: #333;
+        .footer-section ul {
+            list-style: none;
         }
 
-        .close-btn {
-            background: none;
-            border: none;
-            font-size: 2em;
-            cursor: pointer;
-            color: #999;
-            transition: color 0.3s;
+        .footer-section ul li {
+            margin-bottom: 12px;
         }
 
-        .close-btn:hover {
-            color: #333;
+        .footer-section a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            transition: all 0.3s ease;
         }
 
-        .cart-items {
-            margin: 20px 0;
-        }
-
-        .cart-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 10px;
-            margin-bottom: 10px;
-        }
-
-        .cart-item-info {
-            flex: 1;
-        }
-
-        .cart-item-name {
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 5px;
-        }
-
-        .cart-item-price {
-            color: #667eea;
-            font-weight: bold;
-        }
-
-        .quantity-controls {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .qty-btn {
-            background: #667eea;
+        .footer-section a:hover {
             color: white;
-            border: none;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 16px;
-            transition: all 0.3s;
+            padding-left: 5px;
         }
 
-        .qty-btn:hover {
-            background: #764ba2;
-        }
-
-        .quantity {
-            font-weight: bold;
-            min-width: 30px;
+        .footer-bottom {
             text-align: center;
+            padding-top: 30px;
+            border-top: 2px solid rgba(255, 255, 255, 0.2);
+            font-size: 0.95rem;
         }
 
-        .cart-total {
-            border-top: 2px solid #e9ecef;
-            padding-top: 20px;
-            margin-top: 20px;
-        }
-
-        .total-row {
-            display: flex;
-            justify-content: space-between;
-            font-size: 1.5em;
-            font-weight: bold;
-            color: #333;
-        }
-
-        .checkout-btn {
-            width: 100%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 15px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 1.1em;
-            margin-top: 20px;
-            transition: all 0.3s;
-        }
-
-        .checkout-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102,126,234,0.4);
-        }
-
-        .empty-cart {
-            text-align: center;
-            padding: 40px;
-            color: #999;
-        }
-
-        .empty-cart-icon {
-            font-size: 4em;
-            margin-bottom: 10px;
-        }
-
+        /* Responsive */
         @media (max-width: 768px) {
-            h1 {
-                font-size: 1.8em;
+            .hero h1 {
+                font-size: 3rem;
             }
-            
-            .menu-grid {
-                grid-template-columns: 1fr;
+
+            .nav-links {
+                display: none;
             }
-            
-            .cart-btn {
-                top: 10px;
-                right: 10px;
-                padding: 12px 20px;
+
+            .category-grid {
+                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
             }
+
+            .product-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+        }
+
+        /* Floating Decorations */
+        .decoration {
+            position: fixed;
+            font-size: 3rem;
+            opacity: 0.1;
+            z-index: 0;
+            animation: floatSlow 20s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        .decoration:nth-child(1) { top: 10%; left: 5%; animation-delay: 0s; }
+        .decoration:nth-child(2) { top: 30%; right: 8%; animation-delay: 3s; }
+        .decoration:nth-child(3) { bottom: 20%; left: 10%; animation-delay: 6s; }
+        .decoration:nth-child(4) { top: 60%; right: 15%; animation-delay: 9s; }
+
+        @keyframes floatSlow {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(20px, -20px) rotate(10deg); }
+            50% { transform: translate(-15px, 15px) rotate(-10deg); }
+            75% { transform: translate(15px, -10px) rotate(5deg); }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>🍕 Food Delivery</h1>
-            <p class="subtitle">สั่งอาหารอร่อยถึงบ้านคุณ</p>
-        </header>
+    <!-- Floating Decorations -->
+    <div class="decoration">🎈</div>
+    <div class="decoration">⭐</div>
+    <div class="decoration">🎨</div>
+    <div class="decoration">🎪</div>
 
-        <button class="cart-btn" onclick="toggleCart()">
-            🛒 ตะกร้า <span class="cart-count" id="cartCount">0</span>
-        </button>
+    <header>
+        <div class="container">
+            <nav>
+                <a href="#" class="logo">ToyLand</a>
+                <ul class="nav-links">
+                    <li><a href="#home">หน้าแรก</a></li>
+                    <li><a href="#categories">หมวดหมู่</a></li>
+                    <li><a href="#products">สินค้า</a></li>
+                    <li><a href="#about">เกี่ยวกับเรา</a></li>
+                    <li><a href="#contact">ติดต่อ</a></li>
+                </ul>
+                <button class="cart-btn">🛒 ตะกร้า (0)</button>
+            </nav>
+        </div>
+    </header>
 
-        <div class="menu-grid" id="menuGrid"></div>
-    </div>
-
-    <div class="modal" id="cartModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">🛒 ตะกร้าสินค้า</h2>
-                <button class="close-btn" onclick="toggleCart()">&times;</button>
-            </div>
-            <div class="cart-items" id="cartItems"></div>
-            <div class="cart-total" id="cartTotal" style="display: none;">
-                <div class="total-row">
-                    <span>รวมทั้งหมด:</span>
-                    <span id="totalPrice">0 ฿</span>
+    <main>
+        <section class="hero" id="home">
+            <div class="container">
+                <h1>โลกแห่งความสนุก</h1>
+                <p>ค้นพบของเล่นที่น่ารัก สร้างสรรค์ และเติมเต็มจินตนาการของลูกน้อย</p>
+                <div class="search-box">
+                    <input type="text" placeholder="ค้นหาของเล่นที่คุณต้องการ...">
+                    <button>ค้นหา</button>
                 </div>
-                <button class="checkout-btn" onclick="checkout()">สั่งซื้อเลย</button>
+            </div>
+        </section>
+
+        <section class="categories" id="categories">
+            <div class="container">
+                <h2 class="section-title">หมวดหมู่สินค้า</h2>
+                <div class="category-grid">
+                    <div class="category-card">
+                        <span class="category-icon">🧸</span>
+                        <div class="category-name">ตุ๊กตา</div>
+                    </div>
+                    <div class="category-card">
+                        <span class="category-icon">🚗</span>
+                        <div class="category-name">รถของเล่น</div>
+                    </div>
+                    <div class="category-card">
+                        <span class="category-icon">🧩</span>
+                        <div class="category-name">เกมส์ปริศนา</div>
+                    </div>
+                    <div class="category-card">
+                        <span class="category-icon">🎨</span>
+                        <div class="category-name">ของเล่นศิลปะ</div>
+                    </div>
+                    <div class="category-card">
+                        <span class="category-icon">🎮</span>
+                        <div class="category-name">เกมส์อิเล็กทรอนิกส์</div>
+                    </div>
+                    <div class="category-card">
+                        <span class="category-icon">🏃</span>
+                        <div class="category-name">กีฬา & กิจกรรม</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="products" id="products">
+            <div class="container">
+                <h2 class="section-title">สินค้ายอดนิยม</h2>
+                <div class="product-grid">
+                    <div class="product-card">
+                        <div class="product-image">
+                            <span class="badge">ขายดี</span>
+                            🧸
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">ตุ๊กตาหมีน้อย</h3>
+                            <p class="product-description">ตุ๊กตาหมีนุ่มนิ่ม น่ารัก เหมาะสำหรับเด็กทุกวัย</p>
+                            <div class="product-footer">
+                                <span class="price">฿590</span>
+                                <button class="add-to-cart">+ เพิ่ม</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-image">
+                            <span class="badge">ใหม่</span>
+                            🚗
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">รถบังคับวิทยุ</h3>
+                            <p class="product-description">รถบังคับไร้สายความเร็วสูง สนุกสุดมันส์</p>
+                            <div class="product-footer">
+                                <span class="price">฿1,290</span>
+                                <button class="add-to-cart">+ เพิ่ม</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-image">
+                            🧩
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">ตัวต่อเสริมพัฒนาการ</h3>
+                            <p class="product-description">ตัวต่อ 200 ชิ้น เสริมสร้างความคิดสร้างสรรค์</p>
+                            <div class="product-footer">
+                                <span class="price">฿790</span>
+                                <button class="add-to-cart">+ เพิ่ม</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-image">
+                            <span class="badge">ลดพิเศษ</span>
+                            🎨
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">ชุดสีระบายน้ำ</h3>
+                            <p class="product-description">ชุดสีครบชุด 48 สี พร้อมอุปกรณ์</p>
+                            <div class="product-footer">
+                                <span class="price">฿450</span>
+                                <button class="add-to-cart">+ เพิ่ม</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-image">
+                            🎮
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">คอนโซลเกมส์พกพา</h3>
+                            <p class="product-description">เกมส์ในตัว 500+ เกม สนุกไม่รู้จบ</p>
+                            <div class="product-footer">
+                                <span class="price">฿2,490</span>
+                                <button class="add-to-cart">+ เพิ่ม</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-image">
+                            <span class="badge">ขายดี</span>
+                            🏀
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">ชุดบาสเก็ตบอล</h3>
+                            <p class="product-description">ห่วงบาสปรับระดับได้ พร้อมลูกบอล</p>
+                            <div class="product-footer">
+                                <span class="price">฿890</span>
+                                <button class="add-to-cart">+ เพิ่ม</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-image">
+                            👑
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">ชุดเจ้าหญิง</h3>
+                            <p class="product-description">ชุดแฟนซีเจ้าหญิง พร้อมอุปกรณ์แต่งตัว</p>
+                            <div class="product-footer">
+                                <span class="price">฿690</span>
+                                <button class="add-to-cart">+ เพิ่ม</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-image">
+                            <span class="badge">ใหม่</span>
+                            🦖
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">ไดโนเสาร์บังคับ</h3>
+                            <p class="product-description">ไดโนเสาร์หุ่นยนต์ เดินได้ มีเสียง มีไฟ</p>
+                            <div class="product-footer">
+                                <span class="price">฿1,590</span>
+                                <button class="add-to-cart">+ เพิ่ม</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>ToyLand</h3>
+                    <p>ร้านของเล่นออนไลน์ที่ให้มากกว่าความสนุก เราคัดสรรของเล่นคุณภาพเพื่อเติมเต็มรอยยิ้มของลูกน้อย</p>
+                </div>
+                <div class="footer-section">
+                    <h3>เมนู</h3>
+                    <ul>
+                        <li><a href="#">หน้าแรก</a></li>
+                        <li><a href="#">สินค้าทั้งหมด</a></li>
+                        <li><a href="#">โปรโมชั่น</a></li>
+                        <li><a href="#">บทความ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>บริการลูกค้า</h3>
+                    <ul>
+                        <li><a href="#">วิธีการสั่งซื้อ</a></li>
+                        <li><a href="#">การจัดส่งสินค้า</a></li>
+                        <li><a href="#">นโยบายการคืนสินค้า</a></li>
+                        <li><a href="#">คำถามที่พบบ่อย</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>ติดต่อเรา</h3>
+                    <ul>
+                        <li>📧 info@toyland.com</li>
+                        <li>📱 02-xxx-xxxx</li>
+                        <li>📍 กรุงเทพมหานคร ประเทศไทย</li>
+                        <li>🕐 จ-ส: 9:00-18:00 น.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 ToyLand - สงวนลิขสิทธิ์ | ออกแบบด้วยความรัก ❤️</p>
             </div>
         </div>
-    </div>
+    </footer>
 
     <script>
-        const menuData = [
-            {
-                id: 1,
-                name: 'พิซซ่าฮาวายเอี้ยน',
-                desc: 'พิซซ่าหน้าแฮม สับปะรด ชีสเยิ้ม',
-                price: 299,
-                img: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400'
-            },
-            {
-                id: 2,
-                name: 'เบอร์เกอร์ชีสคลาสสิค',
-                desc: 'เบอร์เกอร์เนื้อวัวชั้นเลิศ ชีสเยิ้ม',
-                price: 159,
-                img: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400'
-            },
-            {
-                id: 3,
-                name: 'สปาเก็ตตี้คาโบนาร่า',
-                desc: 'สปาเก็ตตี้ซอสครีมเข้มข้น เบคอนหอม',
-                price: 189,
-                img: 'https://images.unsplash.com/photo-1612874742237-6526221588e3?w=400'
-            },
-            {
-                id: 4,
-                name: 'ซูชิรวมมิตร',
-                desc: 'ซูชิหลากหลายชนิด สดใหม่ทุกวัน',
-                price: 349,
-                img: 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=400'
-            },
-            {
-                id: 5,
-                name: 'ผัดไทยกุ้งสด',
-                desc: 'ผัดไทยกุ้งสด รสชาติต้นตำรับ',
-                price: 129,
-                img: 'https://images.unsplash.com/photo-1559314809-0d155014e29e?w=400'
-            },
-            {
-                id: 6,
-                name: 'ต้มยำกุ้ง',
-                desc: 'ต้มยำกุ้งรสจัดจ้าน กุ้งสดใหญ่',
-                price: 179,
-                img: 'https://images.unsplash.com/photo-1548943487-a2e4e43b4853?w=400'
-            }
-        ];
+        // Add to cart animation
+        document.querySelectorAll('.add-to-cart').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Create floating notification
+                const notification = document.createElement('div');
+                notification.textContent = '✓ เพิ่มลงตะกร้าแล้ว';
+                notification.style.cssText = `
+                    position: fixed;
+                    top: 100px;
+                    right: 20px;
+                    background: linear-gradient(135deg, #4ECDC4, #A06CD5);
+                    color: white;
+                    padding: 15px 30px;
+                    border-radius: 50px;
+                    font-weight: 700;
+                    z-index: 1000;
+                    animation: slideInRight 0.5s ease-out, fadeOut 0.5s ease-out 2s;
+                    box-shadow: 0 10px 30px rgba(78, 205, 196, 0.4);
+                `;
+                
+                document.body.appendChild(notification);
+                
+                // Update cart count
+                const cartBtn = document.querySelector('.cart-btn');
+                const currentCount = parseInt(cartBtn.textContent.match(/\d+/)[0]);
+                cartBtn.textContent = `🛒 ตะกร้า (${currentCount + 1})`;
+                
+                // Remove notification after animation
+                setTimeout(() => {
+                    notification.remove();
+                }, 2500);
+                
+                // Button animation
+                this.style.transform = 'scale(0.9)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 200);
+            });
+        });
 
-        let cart = [];
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
 
-        function renderMenu() {
-            const menuGrid = document.getElementById('menuGrid');
-            menuGrid.innerHTML = menuData.map(item => `
-                <div class="menu-item">
-                    <img src="${item.img}" alt="${item.name}">
-                    <div class="menu-info">
-                        <div class="menu-name">${item.name}</div>
-                        <div class="menu-desc">${item.desc}</div>
-                        <div class="menu-footer">
-                            <div class="price">${item.price} ฿</div>
-                            <button class="add-btn" onclick="addToCart(${item.id})">เพิ่ม +</button>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function addToCart(itemId) {
-            const item = menuData.find(m => m.id === itemId);
-            const existingItem = cart.find(c => c.id === itemId);
-
-            if (existingItem) {
-                existingItem.quantity++;
-            } else {
-                cart.push({ ...item, quantity: 1 });
-            }
-
-            updateCart();
-        }
-
-        function updateQuantity(itemId, change) {
-            const item = cart.find(c => c.id === itemId);
-            if (item) {
-                item.quantity += change;
-                if (item.quantity <= 0) {
-                    cart = cart.filter(c => c.id !== itemId);
+        // Add keyframes for notifications
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideInRight {
+                from {
+                    transform: translateX(400px);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
                 }
             }
-            updateCart();
-        }
-
-        function updateCart() {
-            const cartCount = document.getElementById('cartCount');
-            const cartItems = document.getElementById('cartItems');
-            const cartTotal = document.getElementById('cartTotal');
-            const totalPrice = document.getElementById('totalPrice');
-
-            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-            cartCount.textContent = totalItems;
-
-            if (cart.length === 0) {
-                cartItems.innerHTML = `
-                    <div class="empty-cart">
-                        <div class="empty-cart-icon">🛒</div>
-                        <p>ตะกร้าว่างเปล่า</p>
-                    </div>
-                `;
-                cartTotal.style.display = 'none';
-            } else {
-                cartItems.innerHTML = cart.map(item => `
-                    <div class="cart-item">
-                        <div class="cart-item-info">
-                            <div class="cart-item-name">${item.name}</div>
-                            <div class="cart-item-price">${item.price} ฿</div>
-                        </div>
-                        <div class="quantity-controls">
-                            <button class="qty-btn" onclick="updateQuantity(${item.id}, -1)">-</button>
-                            <span class="quantity">${item.quantity}</span>
-                            <button class="qty-btn" onclick="updateQuantity(${item.id}, 1)">+</button>
-                        </div>
-                    </div>
-                `).join('');
-
-                const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-                totalPrice.textContent = `${total} ฿`;
-                cartTotal.style.display = 'block';
+            
+            @keyframes fadeOut {
+                to {
+                    opacity: 0;
+                    transform: translateX(400px);
+                }
             }
-        }
-
-        function toggleCart() {
-            const modal = document.getElementById('cartModal');
-            modal.classList.toggle('active');
-        }
-
-        function checkout() {
-            if (cart.length === 0) return;
-
-            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            const orderList = cart.map(item => `${item.name} x${item.quantity}`).join('\n');
-            
-            alert(`🎉 สั่งซื้อสำเร็จ!\n\nรายการ:\n${orderList}\n\nยอดรวม: ${total} ฿\n\nขอบคุณที่ใช้บริการ!`);
-            
-            cart = [];
-            updateCart();
-            toggleCart();
-        }
-
-        renderMenu();
+        `;
+        document.head.appendChild(style);
     </script>
 </body>
 </html>
